@@ -14,16 +14,19 @@ public class PlayerJump : MonoBehaviour
     InputAction jumpInput;
     Rigidbody rb;
 
-    void Awake() {
+    void Awake()
+    {
         jumpInput = InputSystem.actions.FindAction("Jump", true);
         jumpTimer = jumpCooldown;
         rb = GetComponent<Rigidbody>();
-        if (rb == null) {
+        if (rb == null)
+        {
             Debug.LogError("No Rigid Body on object with PlayerJump component.");
         }
     }
 
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         HandleJumping();
     }
 

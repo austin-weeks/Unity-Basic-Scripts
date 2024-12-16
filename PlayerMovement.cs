@@ -2,32 +2,38 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public enum GameType { Game3D, Game2D }
-public class PlayerMovement : MonoBehaviour {
-  [SerializeField] float moveSpeed = 10;
-  [SerializeField] GameType gameType;
-  InputAction movementInput;
+public class PlayerMovement : MonoBehaviour
+{
+    [SerializeField] float moveSpeed = 10;
+    [SerializeField] GameType gameType;
+    InputAction movementInput;
 
-  void Start() {
-    movementInput = InputSystem.actions.FindAction("Move");
-  }
-
-  void Update() {
-    Vector2 inputDir = movementInput.ReadValue<Vector2>();
-
-    Vector3 moveDir;
-    if (gameType == GameType.Game3D) {
-      moveDir = new Vector3(inputDir.x, 0f, inputDir.y);
-    } else {
-      moveDir = new Vector3(inputDir.x, inputDir.y, 0f);
+    void Start()
+    {
+        movementInput = InputSystem.actions.FindAction("Move");
     }
-    moveDir.Normalize();
 
-    print("Movement Vector3: " + moveDir);
+    void Update()
+    {
+        Vector2 inputDir = movementInput.ReadValue<Vector2>();
 
-    float adjustedSpeed = moveSpeed * Time.deltaTime;
+        Vector3 moveDir;
+        if (gameType == GameType.Game3D)
+        {
+            moveDir = new Vector3(inputDir.x, 0f, inputDir.y);
+        }
+        else
+        {
+            moveDir = new Vector3(inputDir.x, inputDir.y, 0f);
+        }
+        moveDir.Normalize();
 
-    Vector3 movement = moveDir * adjustedSpeed;
+        print("Movement Vector3: " + moveDir);
 
-    transform.position += movement;
-  }
+        float adjustedSpeed = moveSpeed * Time.deltaTime;
+
+        Vector3 movement = moveDir * adjustedSpeed;
+
+        transform.position += movement;
+    }
 }

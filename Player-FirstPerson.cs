@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof (Rigidbody))]
-public class PlayerFirstPerson: MonoBehaviour {
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerFirstPerson : MonoBehaviour
+{
     [Header("Controls Settings")]
     [SerializeField] float moveSpeed = 70f;
     [SerializeField] float lookSpeed = 1.6f;
@@ -16,20 +17,25 @@ public class PlayerFirstPerson: MonoBehaviour {
     float xRotation = 0f;
 
     //Awake is performed once at the start of the game.
-    void Awake() {
+    void Awake()
+    {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        if (rb.linearDamping < 5f) {
+        if (rb.linearDamping < 5f)
+        {
             Debug.LogWarning($"Rigid Body's drag is set to {rb.linearDamping}. You may want to increase this to around 6.");
         }
         movementInput = InputSystem.actions.FindAction("Move");
         lookInput = InputSystem.actions.FindAction("Look");
-        if (Camera.main != null) {
+        if (Camera.main != null)
+        {
             camTransform = Camera.main.transform;
         }
-        if (camTransform == null) {
+        if (camTransform == null)
+        {
             camTransform = FindFirstObjectByType<Camera>().transform;
-            if (camTransform == null) {
+            if (camTransform == null)
+            {
                 throw new System.Exception("Cannot find Camera. Please ensure there is camera in the game with the tag 'Main Camera'");
             }
         }
@@ -39,20 +45,24 @@ public class PlayerFirstPerson: MonoBehaviour {
     }
 
     //FixedUpdate is performed once every physics update (~60 times a second).
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         HandleLookingAndRotation();
         HandleMovement();
     }
 
-    void HandleLookingAndRotation() {
+    void HandleLookingAndRotation()
+    {
         Vector2 inputLookDir = lookInput.ReadValue<Vector2>();
-        if (inputLookDir == Vector2.zero) {
+        if (inputLookDir == Vector2.zero)
+        {
             return;
         }
         // X Rotation rotates around x axis -> tilts camera up and down
         // We have to use a stored xRotation variable, otherwise things get weird
         float inputXRot = inputLookDir.y * lookSpeed;
-        if (!invertLookYAxis) {
+        if (!invertLookYAxis)
+        {
             inputXRot *= -1;
         }
         // Add input rotation to existing rotation
@@ -66,10 +76,12 @@ public class PlayerFirstPerson: MonoBehaviour {
         transform.rotation *= Quaternion.Euler(0, inputYRot, 0f);
     }
 
-    void HandleMovement() {
+    void HandleMovement()
+    {
         Vector2 inputDir = movementInput.ReadValue<Vector2>();
         //If player is not moving, exit the function and do nothing.
-        if (inputDir == Vector2.zero) {
+        if (inputDir == Vector2.zero)
+        {
             return;
         }
 

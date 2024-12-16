@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpaceShip : MonoBehaviour {
+public class SpaceShip : MonoBehaviour
+{
     [Header("Settings")]
     [SerializeField] float moveSpeed = 65f;
     [SerializeField] float turnSpeed = 1f;
@@ -14,12 +15,15 @@ public class SpaceShip : MonoBehaviour {
     InputAction movementInput;
     InputAction accelerateInput;
 
-    void Awake() {
-        if (lockCursor) {
+    void Awake()
+    {
+        if (lockCursor)
+        {
             Cursor.lockState = CursorLockMode.Locked;
         }
         rb = GetComponent<Rigidbody>();
-        if (rb == null) {
+        if (rb == null)
+        {
             Debug.LogWarning("Don't forget to add a rigid body to the vehicle!");
             rb = gameObject.AddComponent<Rigidbody>();
         }
@@ -31,12 +35,14 @@ public class SpaceShip : MonoBehaviour {
     }
 
     //FixedUpdate is performed once every physics update (~60 times a second).
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         rb.linearDamping = drag;
         rb.angularDamping = angularDrag;
         float accel = accelerateInput.ReadValue<float>();
         //If player is not moving forward, exit the function and do nothing.
-        if (accel < 0.1f) {
+        if (accel < 0.1f)
+        {
             return;
         }
         Vector2 inputDir = movementInput.ReadValue<Vector2>();

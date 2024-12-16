@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 //Be sure to setup a Cinemachine FreeLookCamera as well!
-public class Vehicle: MonoBehaviour {
+public class Vehicle : MonoBehaviour
+{
     [Header("Settings")]
     [SerializeField] float moveSpeed = 65f;
     [SerializeField] float drag = 4f;
@@ -12,9 +13,11 @@ public class Vehicle: MonoBehaviour {
     Transform cameraTransform;
 
     //Awake is performed once at the start of the game.
-    void Awake() {
+    void Awake()
+    {
         rb = GetComponent<Rigidbody>();
-        if (rb == null) {
+        if (rb == null)
+        {
             Debug.LogWarning("Don't forget to add a rigid body to the vehicle!");
             rb = gameObject.AddComponent<Rigidbody>();
         }
@@ -25,11 +28,13 @@ public class Vehicle: MonoBehaviour {
     }
 
     //FixedUpdate is performed once every physics update (~60 times a second).
-    void FixedUpdate() {
+    void FixedUpdate()
+    {
         rb.linearDamping = drag;
         Vector2 inputDir = movementInput.ReadValue<Vector2>();
         //If player is not moving, exit the function and do nothing.
-        if (inputDir == Vector2.zero) {
+        if (inputDir == Vector2.zero)
+        {
             return;
         }
 
@@ -43,7 +48,8 @@ public class Vehicle: MonoBehaviour {
         rb.linearVelocity += movement;
     }
 
-    void RotatePlayer(Vector3 moveDir) {
+    void RotatePlayer(Vector3 moveDir)
+    {
         Quaternion lookRot = Quaternion.LookRotation(moveDir);
         Quaternion newRotation = Quaternion.RotateTowards(transform.rotation, lookRot, rotationSpeed * Time.fixedDeltaTime);
         transform.rotation = newRotation;
