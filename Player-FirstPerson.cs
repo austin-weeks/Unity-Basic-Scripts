@@ -8,20 +8,11 @@ public class PlayerFirstPerson: MonoBehaviour {
     [SerializeField] float lookSpeed = 1.6f;
     [SerializeField] float vertLookLimitDegrees = 85f;
     [SerializeField] bool invertLookYAxis = false;
-    [Header("Jump Settings")]
-    [SerializeField] float gravity = 125f;
-    [SerializeField] float jumpForce = 20f;
-    [SerializeField] float jumpCooldown = 0.5f;
 
-    [Tooltip("Jump Grace Distance determines how close to the ground the player can be before jumping.")]
-    [SerializeField] float jumpGraceDistance = 0.3f;
-    const float rotationSpeed = 600f;
     Rigidbody rb;
     InputAction lookInput;
     InputAction movementInput;
-    InputAction jumpInput;
     Transform camTransform;
-    float jumpTimer = 0f;
     float xRotation = 0f;
 
     //Awake is performed once at the start of the game.
@@ -32,11 +23,7 @@ public class PlayerFirstPerson: MonoBehaviour {
             Debug.LogWarning($"Rigid Body's drag is set to {rb.linearDamping}. You may want to increase this to around 6.");
         }
         movementInput = InputSystem.actions.FindAction("Move");
-        jumpInput = InputSystem.actions.FindAction("Jump");
         lookInput = InputSystem.actions.FindAction("Look");
-        if (movementInput == null || jumpInput == null || lookInput == null) {
-            throw new System.Exception("Cannot find required Input Actions!");
-        }
         if (Camera.main != null) {
             camTransform = Camera.main.transform;
         }
@@ -46,7 +33,6 @@ public class PlayerFirstPerson: MonoBehaviour {
                 throw new System.Exception("Cannot find Camera. Please ensure there is camera in the game with the tag 'Main Camera'");
             }
         }
-        jumpTimer = jumpCooldown;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -56,7 +42,6 @@ public class PlayerFirstPerson: MonoBehaviour {
     void FixedUpdate() {
         HandleLookingAndRotation();
         HandleMovement();
-        HandleJumping();
     }
 
     void HandleLookingAndRotation() {
@@ -96,30 +81,5 @@ public class PlayerFirstPerson: MonoBehaviour {
         Vector3 movement = moveSpeed * Time.fixedDeltaTime * moveDir;
         rb.linearVelocity += movement;
 
-    }
-
-    void HandleJumping() {
-        //Increment our jumpTimer.
-        jumpTimer += Time.fixedDeltaTime;
-        //Check if the player on the ground.
-        Vector3 rayStartPos = transform.position;
-        rayStartPos.y += 0.1f;
-        bool grounded = Physics.Raycast(rayStartPos, Vector3.down, jumpGraceDistance);
-        if (!grounded) {
-            if (rb.linearVelocity.y < 0.1f) {
-                Vector3 gravForce = gravity * Time.fixedDeltaTime * Vector3.down;
-                rb.linearVelocity += gravForce;
-            }
-            return;
-        }
-        //Check if we can ump again.
-        if (jumpTimer < jumpCooldown) return;
-        float jumpInputVal = jumpInput.ReadValue<float>();
-        //If player is pressing jump button, jump!
-        if (jumpInputVal > 0.1f) {
-            jumpTimer = 0f;
-            Vector3 force = Vector3.up * jumpForce;
-            rb.AddForce(force, ForceMode.Impulse);
-        }
     }
 }
