@@ -40,7 +40,6 @@ public class PlayerJump : MonoBehaviour
         Vector3 castStart = new Vector3(transform.position.x, transform.position.y + radius + 0.1f, transform.position.z);
         // bool grounded = Physics.Raycast(rayStart, Vector3.down, jumpGraceDistance);
         bool grounded = Physics.SphereCast(castStart, radius, Vector3.down, out _, jumpGraceDistance + radius);
-        print(grounded);
         if (!grounded)
         {
             if (rb.linearVelocity.y < 0.1f)
