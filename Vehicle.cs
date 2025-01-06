@@ -10,7 +10,6 @@ public class Vehicle : MonoBehaviour
     [SerializeField] float rotationSpeed = 200f;
     Rigidbody rb;
     InputAction movementInput;
-    Transform cameraTransform;
 
     //Awake is performed once at the start of the game.
     void Awake()
@@ -24,7 +23,6 @@ public class Vehicle : MonoBehaviour
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         rb.freezeRotation = true;
         movementInput = InputSystem.actions.FindAction("Move", true);
-        cameraTransform = Camera.main.transform;
     }
 
     //FixedUpdate is performed once every physics update (~60 times a second).
@@ -39,7 +37,7 @@ public class Vehicle : MonoBehaviour
         }
 
         //Calculate our movement direction using camera position and player input.
-        float targetAngle = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + cameraTransform.eulerAngles.y;
+        float targetAngle = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
         RotatePlayer(moveDir);

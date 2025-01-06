@@ -13,7 +13,6 @@ public class PlayerFirstPerson : MonoBehaviour
     Rigidbody rb;
     InputAction lookInput;
     InputAction movementInput;
-    Transform camTransform;
     float xRotation = 0f;
 
     //Awake is performed once at the start of the game.
@@ -27,19 +26,6 @@ public class PlayerFirstPerson : MonoBehaviour
         }
         movementInput = InputSystem.actions.FindAction("Move");
         lookInput = InputSystem.actions.FindAction("Look");
-        if (Camera.main != null)
-        {
-            camTransform = Camera.main.transform;
-        }
-        if (camTransform == null)
-        {
-            camTransform = FindFirstObjectByType<Camera>().transform;
-            if (camTransform == null)
-            {
-                throw new System.Exception("Cannot find Camera. Please ensure there is camera in the game with the tag 'Main Camera'");
-            }
-        }
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -69,7 +55,7 @@ public class PlayerFirstPerson : MonoBehaviour
         xRotation += inputXRot;
         // Clamp rotation between constraint variable
         xRotation = Mathf.Clamp(xRotation, -vertLookLimitDegrees, vertLookLimitDegrees);
-        camTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        Camera.main.transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
         // Y Rotation rotates around y axis -> turns player side to side
         float inputYRot = inputLookDir.x * lookSpeed;
@@ -87,7 +73,7 @@ public class PlayerFirstPerson : MonoBehaviour
 
         //Calculate our movement direction using current direction and player input.
         //Calculate our movement direction using camera position and player input.
-        float targetAngle = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + camTransform.eulerAngles.y;
+        float targetAngle = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + Camera.main.transform.eulerAngles.y;
         Vector3 moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
 
         Vector3 movement = moveSpeed * Time.fixedDeltaTime * moveDir;
