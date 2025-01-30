@@ -31,9 +31,11 @@ public class CoasterTrack : MonoBehaviour
         foreach (var sourceContainer in childContainers)
         {
             if (sourceContainer == TrackSpline) continue;
-            foreach (var knot in sourceContainer.Spline)
+            var sourceTransform = sourceContainer.transform;
+            for (int i = 0; i < sourceContainer.Spline.Count; i++)
             {
-                var worldPos = sourceContainer.track.TransformPoint(knot.Position);
+                var knot = sourceContainer.Spline[i];
+                var worldPos = sourceTransform.TransformPoint(knot.Position);
                 var localPos = transform.InverseTransformPoint(worldPos);
                 TrackSpline.Spline.Add(localPos, tangentMode);
             }
