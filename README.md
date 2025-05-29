@@ -9,3 +9,5 @@ Code for use in Unity Engine! Here you will find code for character controllers 
 - [Legacy Character Controller](https://github.com/austin-weeks/Unity-Basic-Scripts/blob/main/PlayerMovement-Legacy.cs) - Character controller using Unity's Legacy Input system. Not recommended - use the Basic Character Controller instead. Contains comments detailing each line of code.
 - [Vehicle Controller](https://github.com/austin-weeks/Unity-Basic-Scripts/blob/main/Vehicle.cs) - Player controller for car-like vehicles.
 - [Spaceship/Plane Controller](https://github.com/austin-weeks/Unity-Basic-Scripts/blob/main/SpaceShip.cs) - Player controller for spaceship or planes.
+
+- [Tri-Planar Shader](https://github.com/austin-weeks/Unity-Basic-Scripts/blob/main/Tri-Planar.shadergraph) - A basic Tri-Planar shader. Useful for adding textures to objects while ignoring their existing uv coordinates.
